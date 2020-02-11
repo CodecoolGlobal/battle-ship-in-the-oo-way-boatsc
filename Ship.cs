@@ -6,6 +6,7 @@ namespace BattleShip
     {
         public String Direction { get; set; }
         public Int32 Size { get; set; }
+
         public Boolean IsSunk;
 
         public Ship(string direction, int size)
@@ -15,5 +16,9 @@ namespace BattleShip
             IsSunk = false;
         }
 
-    }
+    //     public void AddShip(int row, int column, string direction)
+    //     {
+    //        to be continued...
+    //     }
+    // }
 }

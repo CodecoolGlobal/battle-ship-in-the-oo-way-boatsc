@@ -35,5 +35,12 @@ namespace BattleShip
                     return "[ ]";
             }
         }
+
+        // public String ConvertCoordinates(string addedCoordinates)
+        // {
+        //     string[] newCoordinates = addedCoordinates.Split();
+        //     to be continued...
+
+        // }
     }
 }

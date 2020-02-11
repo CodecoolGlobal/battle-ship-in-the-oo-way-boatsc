@@ -23,6 +23,7 @@ namespace BattleShip
         {
             String[] alphas = new String[] {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
             String[] nums = new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
+            Console.WriteLine();
             for (int i = 0; i < 10; i++)
             {
                 if (i == 0)
@@ -36,6 +37,7 @@ namespace BattleShip
                 }
                 Console.WriteLine(newLine);
             }
+            Console.WriteLine();
         }
     }
 }

@@ -11,4 +11,10 @@ namespace BattleShip
         Submarine, // (3)
         Destroyer // (2)
     }
+
+    public enum ShipDirection
+    {
+        Vertical,
+        Horizontal
+    }
 }
