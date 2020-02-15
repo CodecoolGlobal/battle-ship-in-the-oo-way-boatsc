@@ -9,7 +9,6 @@ namespace BattleShip
         public string BoardOwner { get; set; }
         public Square[,] Board {get; set;}
         public List<string> Ships {get; set;}
-
         public String[] alphas = new String[] {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
         public String[] nums = new String[] {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
         
@@ -50,15 +49,9 @@ namespace BattleShip
             View.EmptyLine();
         }
 
-        public void AddShip(Coordinates coordinates, ShipDirection direction, SquareType squareType)
+        private void BuildShip(Coordinates coordinates, ShipDirection direction, SquareType squareType)
         {
             Ship ship = new Ship(direction, squareType);
-            BuildShip(coordinates, direction, squareType, ship);
-            Ships.Add(ship.ShipName);
-        }
-
-        private void BuildShip(Coordinates coordinates, ShipDirection direction, SquareType squareType, Ship ship)
-        {
             for (int i = 0; i < ship.Size; i++)
             {
                 Board[coordinates.Row, coordinates.Col].SquareType = squareType;
@@ -71,6 +64,7 @@ namespace BattleShip
                     coordinates.Row++;
                 }
             }
+            Ships.Add(ship.ShipName);
         }
 
         public bool SpaceEmpty(Coordinates coordinates)
@@ -79,7 +73,7 @@ namespace BattleShip
             {
                 return true;
             }
-        return false;
+            return false;
         // add check if potential ship fits in the board
         }
 
@@ -156,7 +150,7 @@ namespace BattleShip
             for (int i = 3; i < shipTypes.Length; i++)
             {
                 SquareType shipType = (SquareType)shipTypes.GetValue(i);
-                GetDataForShip(shipType);
+                AddShip(shipType);
 
                 if (FiveShipsSet())
                 {
@@ -165,20 +159,20 @@ namespace BattleShip
             }
         }
 
-        private void GetDataForShip(SquareType shipType) {
+        private void AddShip(SquareType shipType) {
             
             Coordinates coordinates = GetCoordinates(shipType);
             ShipDirection direction = GetShipDirection(shipType);
 
             if (SpaceEmpty(coordinates))
             {
-                AddShip(coordinates, direction, shipType);
+                BuildShip(coordinates, direction, shipType);
                 PrintBoard();
             }
             else
             {
                 Console.WriteLine("There is already ship in this place!");
-                GetDataForShip(shipType);
+                AddShip(shipType);
             }
         }
     }

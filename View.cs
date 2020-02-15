@@ -4,6 +4,12 @@ namespace BattleShip
 {
     class View
     {
+        public static void WelcomeToGame()
+        {
+            Console.WriteLine("Welcome to Battleship game! Set your ships and try to shoot ships of your oponent. Good luck!");
+            Console.WriteLine("Press any key to START...");
+            Console.ReadLine();
+        }
         public static void EmptyLine()
         {
             Console.WriteLine();
