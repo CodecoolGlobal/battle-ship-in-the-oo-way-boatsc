@@ -4,15 +4,16 @@ namespace BattleShip
 {
     public class Square
     {   
-        public int Row { get; set; }
-        public int Col {get; set; }
+        // public int Row { get; set; }
+        // public int Col {get; set; }
+        public Coordinates Coordinates { get; set; }
         public SquareType SquareType { get; set; }
 
         public Square(int row, int col)
         {
-            Row = row;
-            Col = col;
-            // Coordinates = new Coordinates(row, col);
+            // Row = row;
+            // Col = col;
+            Coordinates = new Coordinates(row, col);
             SquareType = SquareType.Empty;
         }
 

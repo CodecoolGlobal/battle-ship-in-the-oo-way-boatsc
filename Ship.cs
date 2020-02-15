@@ -35,5 +35,6 @@ namespace BattleShip
                     return 3;
             }
         }
+
     }
 }
