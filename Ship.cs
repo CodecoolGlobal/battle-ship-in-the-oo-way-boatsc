@@ -6,6 +6,7 @@ namespace BattleShip
     public class Ship
     {
         // public List<Square> Squares { get; set; }
+        public string ShipName { get; set; }
         public ShipDirection Direction { get; set; }
         public SquareType SquareType { get; set; }
         public int Size { get; set; }
@@ -13,6 +14,7 @@ namespace BattleShip
 
         public Ship(ShipDirection direction, SquareType shipType)
         {
+            ShipName = shipType.ToString();
             Direction = direction;
             SquareType = shipType;
             IsSunk = false;

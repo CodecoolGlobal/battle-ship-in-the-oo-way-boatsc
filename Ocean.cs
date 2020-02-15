@@ -8,7 +8,7 @@ namespace BattleShip
         public string BoardName {get; set;}
         public string BoardOwner { get; set; }
         public Square[,] Board {get; set;}
-        public List<Ship> Ships {get; set;}
+        public List<string> Ships {get; set;}
 
         public String[] alphas = new String[] {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
         public String[] nums = new String[] {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
@@ -25,7 +25,7 @@ namespace BattleShip
                     Board[i, j] = new Square(i, j);
                 }
             }
-            Ships = new List<Ship>();
+            Ships = new List<string>();
             BoardOwner = boardOwner;
         }
 
@@ -52,26 +52,24 @@ namespace BattleShip
 
         public void AddShip(Coordinates coordinates, ShipDirection direction, SquareType squareType)
         {
-            if (SpaceEmpty(coordinates))
+            Ship ship = new Ship(direction, squareType);
+            BuildShip(coordinates, direction, squareType, ship);
+            Ships.Add(ship.ShipName);
+        }
+
+        private void BuildShip(Coordinates coordinates, ShipDirection direction, SquareType squareType, Ship ship)
+        {
+            for (int i = 0; i < ship.Size; i++)
             {
-                Ship ship = new Ship(direction, squareType);
-                for (int i = 0; i < ship.Size; i++)
+                Board[coordinates.Row, coordinates.Col].SquareType = squareType;
+                if (direction == ShipDirection.Horizontal)
                 {
-                    Board[coordinates.Row, coordinates.Col].SquareType = squareType;
-                    if (direction == ShipDirection.Horizontal)
-                    {
-                        coordinates.Col++;
-                    }
-                    else
-                    {
-                        coordinates.Row++;
-                    } 
+                    coordinates.Col++;
                 }
-                Ships.Add(ship);
-            }
-            else
-            {
-                Console.WriteLine("There is already ship in this place!");
+                else
+                {
+                    coordinates.Row++;
+                }
             }
         }
 
@@ -101,8 +99,24 @@ namespace BattleShip
         public bool CorrectCoordinates(string inputCoordinates)
         {
             //check if 2 chars, first must be a letter, second - a one digit number
+            bool ifCorrect = true;
+            if (inputCoordinates.Length > 2)
+            {
+                ifCorrect = false;
+                Console.WriteLine("Coordinates can be only 2 digits.");
+            }
+            if (LetterAToJ(inputCoordinates) || char.IsNumber((char)inputCoordinates[0]))
+            {
+                ifCorrect = false;
+                Console.WriteLine("First character of coordinates must be a letter (A-J), and second - a number (0-9).");
+            }
 
-            return true;
+            return ifCorrect;
+        }
+
+        private bool LetterAToJ(string inputCoordinates)
+        {
+            return Array.IndexOf(alphas, char.ToUpper(inputCoordinates[0]).ToString()) == -1;
         }
 
         public Coordinates ConvertCoordinates(string inputCoordinates)
@@ -138,20 +152,33 @@ namespace BattleShip
 
         public void SetShipsInBoard()
         {
-            foreach (SquareType shipType in Enum.GetValues(typeof(SquareType)))
+            var shipTypes = Enum.GetValues(typeof(SquareType));
+            for (int i = 3; i < shipTypes.Length; i++)
             {
-                if ((int)shipType > 2)
-                {
-                    Coordinates coordinates = GetCoordinates(shipType);
-                    ShipDirection direction = GetShipDirection(shipType);
-                    AddShip(coordinates, direction, shipType);
-                    PrintBoard();
-                    Console.ReadLine();
-                }
+                SquareType shipType = (SquareType)shipTypes.GetValue(i);
+                GetDataForShip(shipType);
+
                 if (FiveShipsSet())
                 {
                     break;
                 }
+            }
+        }
+
+        private void GetDataForShip(SquareType shipType) {
+            
+            Coordinates coordinates = GetCoordinates(shipType);
+            ShipDirection direction = GetShipDirection(shipType);
+
+            if (SpaceEmpty(coordinates))
+            {
+                AddShip(coordinates, direction, shipType);
+                PrintBoard();
+            }
+            else
+            {
+                Console.WriteLine("There is already ship in this place!");
+                GetDataForShip(shipType);
             }
         }
     }
