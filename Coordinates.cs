@@ -5,12 +5,12 @@ namespace BattleShip
     public class Coordinates
     {
         public int Row {get; set;}
-        public int Column { get; set;}
+        public int Col { get; set;}
 
-        public Coordinates(int row, int column)
+        public Coordinates(int row, int col)
         {
             Row = row;
-            Column = column;
+            Col = col;
         }
     }
 }

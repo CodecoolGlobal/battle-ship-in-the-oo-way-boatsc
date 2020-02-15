@@ -3,13 +3,16 @@ using System;
 namespace BattleShip
 {
     public class Square
-    {
-        public Coordinates Coordinates { get; set; }
+    {   
+        public int Row { get; set; }
+        public int Col {get; set; }
         public SquareType SquareType { get; set; }
 
-        public Square(int row, int column)
+        public Square(int row, int col)
         {
-            Coordinates = new Coordinates(row, column);
+            Row = row;
+            Col = col;
+            // Coordinates = new Coordinates(row, col);
             SquareType = SquareType.Empty;
         }
 
