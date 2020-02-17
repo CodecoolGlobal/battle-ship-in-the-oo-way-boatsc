@@ -25,6 +25,7 @@ namespace BattleShip
             View.PlayerChange();
             boardPlayerTwo.PrintBoard();
             boardPlayerTwo.SetShipsInBoard();
+            
             bool allSunk = false;
 
             while (!allSunk)

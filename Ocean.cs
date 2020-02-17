@@ -49,13 +49,12 @@ namespace BattleShip
             View.EmptyLine();
         }
 
-        private void BuildShip(Coordinates coordinates, ShipDirection direction, SquareType squareType)
+        private void BuildShip(Coordinates coordinates, Ship ship)
         {
-            Ship ship = new Ship(direction, squareType);
             for (int i = 0; i < ship.Size; i++)
             {
-                Board[coordinates.Row, coordinates.Col].SquareType = squareType;
-                if (direction == ShipDirection.Horizontal)
+                Board[coordinates.Row, coordinates.Col].SquareType = ship.SquareType;
+                if (ship.Direction == ShipDirection.Horizontal)
                 {
                     coordinates.Col++;
                 }
@@ -67,14 +66,53 @@ namespace BattleShip
             Ships.Add(ship.ShipName);
         }
 
-        public bool SpaceEmpty(Coordinates coordinates)
+        private bool PossibleToBuild(Coordinates coordinates, Ship ship)
         {
-            if (Board[coordinates.Row , coordinates.Col].SquareType == SquareType.Empty)
+            Coordinates potentialCoordinates = new Coordinates(coordinates.Row, coordinates.Col);
+            for (int i = 0; i < ship.Size; i++)
+            {
+                if (ship.Direction == ShipDirection.Horizontal)
+                {
+                    potentialCoordinates.Col++;
+                }
+                else
+                {
+                    potentialCoordinates.Row++;
+                }
+                if (!FitsInBoard(potentialCoordinates)) //(!SpaceEmpty(potentialCoordinates)
+                {
+                    return false;
+                }
+                if (!SpaceEmpty(potentialCoordinates))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public bool SpaceEmpty(Coordinates coordinates)
+        {   
+                if (Board[coordinates.Row , coordinates.Col].SquareType == SquareType.Empty)
+                {
+                    return true;
+                }
+            return false;
+        }
+
+        public bool FitsInBoard(Coordinates coordinates)
+        {
+            List<int> numbers = new List<int>();
+            foreach (string item in nums)
+            {
+                numbers.Add(int.Parse(item));
+            }
+
+            if (numbers.Contains(coordinates.Row) && numbers.Contains(coordinates.Col))
             {
                 return true;
             }
             return false;
-        // add check if potential ship fits in the board
         }
 
         public Coordinates GetCoordinates(SquareType shipType)
@@ -160,18 +198,19 @@ namespace BattleShip
         }
 
         private void AddShip(SquareType shipType) {
-            
             Coordinates coordinates = GetCoordinates(shipType);
             ShipDirection direction = GetShipDirection(shipType);
 
-            if (SpaceEmpty(coordinates))
+            Ship ship = new Ship(direction, shipType);
+
+            if (SpaceEmpty(coordinates) && PossibleToBuild(coordinates, ship))
             {
-                BuildShip(coordinates, direction, shipType);
+                BuildShip(coordinates, ship);
                 PrintBoard();
             }
             else
             {
-                Console.WriteLine("There is already ship in this place!");
+                Console.WriteLine($"{shipType} won't fit here!");
                 AddShip(shipType);
             }
         }
